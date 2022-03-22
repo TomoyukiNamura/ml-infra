@@ -1,0 +1,18 @@
+FROM python:3.9.11-slim-buster
+
+RUN mkdir -p /jupyterlab
+
+WORKDIR /jupyterlab
+
+ENV LC_ALL=C.UTF-8
+ENV LANG=C.UTF-8
+
+RUN echo "export LC_ALL=$LC_ALL" >> /etc/profile.d/locale.sh
+RUN echo "export LANG=$LANG" >> /etc/profile.d/locale.sh
+
+RUN pip install jupyterlab
+
+COPY ./jupyterlab_start.sh ./jupyterlab_start.sh
+RUN chmod +x ./jupyterlab_start.sh
+
+CMD ["./jupyterlab_start.sh"]

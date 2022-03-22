@@ -1,0 +1,16 @@
+FROM python:3.8.13-slim-buster
+
+WORKDIR /app
+
+ENV LC_ALL=C.UTF-8
+ENV LANG=C.UTF-8
+
+RUN echo "export LC_ALL=$LC_ALL" >> /etc/profile.d/locale.sh
+RUN echo "export LANG=$LANG" >> /etc/profile.d/locale.sh
+
+RUN pip install kedro==0.17.7 kedro-viz==4.3.1 mlflow==1.24.0
+
+COPY ./kedro_start.sh ./kedro_start.sh
+RUN chmod +x ./kedro_start.sh
+
+CMD ["./kedro_start.sh"]

@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+
+  # jupyterlab:
+  #   build:
+  #     context: .
+  #     dockerfile: ./container_files/Dockerfile_jupyterlab
+  #   container_name: jupyterlab
+  #   # expose:
+  #   #   - 8888
+  #   ports:
+  #     - "127.0.0.1:18888:8888"
+  #   volumes:
+  #     - .:/jupyterlab
+  #   tty: false
+
+  mlflow:
+    build:
+      context: .
+      dockerfile: ./container_files/Dockerfile_mlflow
+    container_name: mlflow
+    expose:
+      - 5000
+    ports:
+      - "127.0.0.1:15000:5000"
+    environment:
+      VIRTUAL_PORT: 5000
+    volumes:
+      - .:/mlflow
+    tty: false
+
+  kedro:
+    # runtime: nvidia
+    build:
+      context: .
+      dockerfile: ./container_files/Dockerfile_kedro
+    container_name: kedro
+    environment:
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+      # NVIDIA_VISIBLE_DEVICES: all
+    ports:
+      - "127.0.0.1:14141:4141"
+    depends_on:
+      - mlflow
+    volumes:
+      - .:/app
+    tty: true

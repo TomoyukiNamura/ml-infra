@@ -1,0 +1,4 @@
+output_dir: .
+project_name: Kedro Env
+repo_name: kedro-env
+python_package: kedro_env
